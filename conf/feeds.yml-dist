@@ -1,0 +1,9 @@
+feeds:
+    example: 
+        url: http://example.org/rss.xml
+        twitter:
+            user: user
+            pass: pass
+        prefix: '[blog]'
+        
+        
