@@ -37,9 +37,9 @@ class r2t {
             $cnt = 1;
             foreach ($newentries as $guid => $e) {
 
-                $this->twit($e, $options);
+                $options = $this->twit($e, $options);
                 $cnt++;
-                if ($cnt > $options['maxPosts']) {
+                if ($cnt > $options['maxposts']) {
                     break;
                 }
             }
@@ -60,6 +60,19 @@ class r2t {
 
         try {
             $service = new Services_Twitter($options['twitter']['user'], $options['twitter']['pass']);
+
+            if (isset($options['shortener']) && $options['shortener'] && strlen($entry['link']) > $options['maxurllength']) {
+                if (!isset($options['shortenerObject'])) {
+                    $this->debug("create " . $options['shortener'] . " class");
+                    include_once("r2t/shortener/".$options['shortener'].".php");
+                    $classname = "r2t_shortener_".$options['shortener'];
+                    $options['shortenerObject'] = new $classname();
+                }
+                $this->debug("shorten " . $entry['link'] ." to ");
+                $entry['link'] = $options['shortenerObject']->shorten($entry['link']);
+                $this->debug( "    " . $entry['link']);
+            }
+
             $msg = $entry['title'] . " " . $entry['link'];
             if (isset($options['prefix'])) {
                 $msg = $options['prefix'] . " " . $msg;
@@ -70,6 +83,8 @@ class r2t {
         } catch (Exception $e) {
             print "Couldn't post " . $entry['title'] . " " . $entry['link'] . " due to " . $e->getMessage();
         }
+
+        return $options;
 
     }
 
