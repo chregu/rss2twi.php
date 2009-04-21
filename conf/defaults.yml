@@ -2,4 +2,4 @@ defaults:
     shortener: liipto
     maxurllength: 30
     prefix: ''
-    maxPosts: 2
+    maxPosts: 5
