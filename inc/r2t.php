@@ -13,6 +13,12 @@ class r2t {
 
     protected function init() {
         include_once ("sfYaml/sfYaml.class.php");
+        define('R2T_TEMP_DIR', R2T_PROJECT_DIR . "/tmp/");
+        if (!file_Exists(R2T_TEMP_DIR)) {
+            if (!mkdir(R2T_TEMP_DIR)) {
+                die("Could not create " . R2T_TEMP_DIR);
+            }
+        }
         $yaml = file_get_contents(R2T_PROJECT_DIR . '/conf/defaults.yml');
         $yaml .= file_get_contents(R2T_PROJECT_DIR . '/conf/feeds.yml');
         $f = sfYAML::Load($yaml);
@@ -41,7 +47,7 @@ class r2t {
     }
 
     protected function mergeOptionsWithDefaults($options) {
-        foreach($this->defaults as $name => $value) {
+        foreach ($this->defaults as $name => $value) {
             if (!isset($options[$name])) {
                 $options[$name] = $value;
             }
@@ -54,11 +60,11 @@ class r2t {
 
         try {
             $service = new Services_Twitter($options['twitter']['user'], $options['twitter']['pass']);
-            $msg = $entry['title'] ." " . $entry['link'];
+            $msg = $entry['title'] . " " . $entry['link'];
             if (isset($options['prefix'])) {
-                $msg = $options['prefix'] . " ". $msg;
+                $msg = $options['prefix'] . " " . $msg;
             }
-            $msg= trim($msg);
+            $msg = trim($msg);
             $this->debug("twit " . $msg);
             $service->statuses->update($msg);
         } catch (Exception $e) {
@@ -71,7 +77,7 @@ class r2t {
         $oldentries = $this->getOldEntries($feedname);
         $onlineentries = $this->getOnlineEntries($url);
         if (count($onlineentries) > 0) {
-            file_put_contents(R2T_PROJECT_DIR . "/tmp/$feedname", sfYaml::dump($onlineentries));
+            file_put_contents(R2T_TEMP_DIR . "/$feedname", sfYaml::dump($onlineentries));
         }
         $newentries = $onlineentries;
         foreach ($onlineentries as $guid => $a) {
@@ -86,9 +92,9 @@ class r2t {
     }
 
     protected function getOldEntries($feed) {
-        $file = R2T_PROJECT_DIR . "/tmp/$feed";
+        $file = R2T_TEMP_DIR."/$feed";
         $oldentries = array();
-        if (file_exists(R2T_PROJECT_DIR . "/tmp/$feed")) {
+        if (file_exists($file)) {
             $oldentries = sfYAML::Load($file);
         }
         return $oldentries;
