@@ -64,13 +64,13 @@ class r2t {
             if (isset($options['shortener']) && $options['shortener'] && strlen($entry['link']) > $options['maxurllength']) {
                 if (!isset($options['shortenerObject'])) {
                     $this->debug("create " . $options['shortener'] . " class");
-                    include_once("r2t/shortener/".$options['shortener'].".php");
-                    $classname = "r2t_shortener_".$options['shortener'];
+                    include_once ("r2t/shortener/" . $options['shortener'] . ".php");
+                    $classname = "r2t_shortener_" . $options['shortener'];
                     $options['shortenerObject'] = new $classname();
                 }
-                $this->debug("shorten " . $entry['link'] ." to ");
+                $this->debug("shorten " . $entry['link'] . " to ");
                 $entry['link'] = $options['shortenerObject']->shorten($entry['link']);
-                $this->debug( "    " . $entry['link']);
+                $this->debug("    " . $entry['link']);
             }
 
             $msg = $entry['title'] . " " . $entry['link'];
@@ -121,7 +121,7 @@ class r2t {
     }
 
     protected function getOldEntries($feed) {
-        $file = R2T_TEMP_DIR."/$feed";
+        $file = R2T_TEMP_DIR . "/$feed";
         $oldentries = array();
         if (file_exists($file)) {
             $oldentries = sfYAML::Load($file);
