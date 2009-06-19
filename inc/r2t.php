@@ -92,6 +92,20 @@ class r2t {
         $oldentries = $this->getOldEntries($feedname);
         $onlineentries = $this->getOnlineEntries($url);
         if (count($onlineentries) > 0) {
+            //keep some old entries, so that they don't get repostet if the show up later
+            $z = 0;
+            $max = count($onlineentries);
+            
+            foreach($oldentries as $k => $v) {
+                if(!isset($onlineentries[$k])) { 
+                    $onlineentries[$k] = $v;
+                    $z++;
+                    if ($z > $max) {
+                        break;
+                    }
+                }
+            }
+                    
             file_put_contents(R2T_TEMP_DIR . "/$feedname", sfYaml::dump($onlineentries));
         }
         $newentries = $onlineentries;
