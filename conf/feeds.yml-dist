@@ -2,6 +2,12 @@ feeds:
     example: 
         url: http://example.org/rss.xml
         twitter:
+            # for oauth access (preferred)
+            # Run getOauthToken.php on the commandline and do what it tells
+            # You need the pecl oauth extension for this.
+            token: tokenALongStringForThetoken
+            secret: secretUsuallyLongAndAll
+            # for old school username/password access
             user: user
             pass: pass
         prefix: '[blog]'
