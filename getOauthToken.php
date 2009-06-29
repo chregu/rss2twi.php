@@ -6,7 +6,11 @@ $api_url = 'http://twitter.com/statuses/update.json';
 $conskey = 'DyhAb4DLlFmc5Wn29QvL9g';
 $conssec = 'wgaBiC9YJx38sqBLklUqpkWB1Cq1ztAemp5lkfwQ';
 try {
-    session_start();
+
+	if (!class_exists("OAuth")) {
+		print "You need the oauth extension. Get it at http://pecl.php.net/package/oauth\n";
+		die();
+	}
     
     $oauth = new OAuth($conskey,$conssec,OAUTH_SIG_METHOD_HMACSHA1,OAUTH_AUTH_TYPE_URI);
     $oauth->disableSSLChecks();
@@ -18,7 +22,7 @@ try {
     $secret = $request_token_info["oauth_token_secret"];
     $oauth->setToken($request_token_info["oauth_token"],$request_token_info["oauth_token_secret"]);
     
-    printf("I think I got a valid request token, navigate your www client to:\n\n%s?oauth_token=%s\n\nOnce you finish authorizing, hit ENTER or INTERRUPT to exit\n\n", $authurl, $request_token_info["oauth_token"]);
+    printf("I think I got a valid request token, navigate your www client to:\n\n%s?oauth_token=%s\n\nOnce you finish authorizing, insert the PIN and hit  ENTER to continue\n\n", $authurl, $request_token_info["oauth_token"]);
     
     $in = fopen("php://stdin", "r");
     $foo =    fgets($in, 255);
