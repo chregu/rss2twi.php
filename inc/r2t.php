@@ -36,8 +36,13 @@ class r2t {
             $newentries = $this->getNewEntries($feedname, $options['url']);
             $cnt = 1;
             foreach ($newentries as $guid => $e) {
-
-                $options = $this->twit($e, $options);
+                try {
+                    $options = $this->twit($e, $options);
+                } catch (Exception $e) {
+                    print "Couldn't post " . $entry['title'] . " " . $entry['link'] . " due to " . $e->getMessage();
+                    unset ($newentries[$guid]);
+                    continue;
+                }
                 $cnt++;
                 if ($cnt > $options['maxposts']) {
                     break;
@@ -86,7 +91,6 @@ class r2t {
     protected function twit($entry, $options) {
         include_once 'Services/Twitter.php';
 
-        try {
             $service = new Services_Twitter($options['twitter']['user'], $options['twitter']['pass']);
 
             if (isset($options['shortener']) && $options['shortener'] && strlen($entry['link']) > $options['maxurllength']) {
@@ -129,10 +133,6 @@ class r2t {
                 $service->statuses->update($msg);
             }
             
-        } catch (Exception $e) {
-            print "Couldn't post " . $entry['title'] . " " . $entry['link'] . " due to " . $e->getMessage();
-        }
-
         return $options;
 
     }
