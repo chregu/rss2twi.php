@@ -31,6 +31,7 @@ try {
     
     print "Add the following to your conf/feeds.yml\n";
     print "*****\n";
+    print "        twitter:\n";
     print "            token: ".$access_token_info['oauth_token'] ."\n";
     print "            secret: ". $access_token_info['oauth_token_secret'] ."\n";
     print "*****\n";
