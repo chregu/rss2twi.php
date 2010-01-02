@@ -52,6 +52,8 @@ class XML_Feed_Parser_RSS2Element extends XML_Feed_Parser_RSS2
         'pubDate' => array('Date'),
         'source' => array('Source'),
         'link' => array('Text'),
+        'lat' => array('Text'),
+        'long' => array('Text'),
         'content' => array('Content'));
 
     /**

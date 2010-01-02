@@ -103,7 +103,10 @@ class r2t {
             $oauth->setToken($options['twitter']['token'], $options['twitter']['secret']);
             
             $api_args = array("status" => $msg, "empty_param" => NULL);
-            
+            if (isset($entry['lat'])) {
+                $api_args['lat'] = $entry['lat'];
+                $api_args['long'] = $entry['long'];
+            }
             $oauth->fetch($api_url, $api_args, OAUTH_HTTP_METHOD_POST, array("User-Agent" => "pecl/oauth"));
             /* end oauth */
         } else {
@@ -184,6 +187,11 @@ class r2t {
             );
             if(!$entry->guid) {
                 $entry->guid = $entry->link;
+            }
+            
+            if ($entry->lat) {
+                $e['lat'] = $entry->lat;
+                $e['long'] = $entry->long;
             }
             $entries[$entry->guid] = $e;
         }
