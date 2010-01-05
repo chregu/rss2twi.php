@@ -78,7 +78,14 @@ class r2t {
                 $options['shortenerObject'] = new $classname();
             }
             $this->debug("shorten " . $entry['link'] . " to ");
-            $entry['link'] = $options['shortenerObject']->shorten($entry['link']);
+            $res = $options['shortenerObject']->shorten($entry['link'],$entry['title']);
+            if (is_array($res)) {
+                $entry['link'] = $res['url'];
+                $entry['title'] = $res['text'];
+            } else {
+                $entry['link'] = $res;
+            }
+             
             $this->debug("    " . $entry['link']);
         }
         
