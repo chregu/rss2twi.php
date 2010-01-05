@@ -66,9 +66,6 @@ class r2t {
         
     }
     protected function twit($entry, $options) {
-        include_once 'Services/Twitter.php';
-        
-        $service = new Services_Twitter($options['twitter']['user'], $options['twitter']['pass']);
         
         if (isset($options['shortener']) && $options['shortener'] && strlen($entry['link']) > $options['maxurllength']) {
             if (!isset($options['shortenerObject'])) {
@@ -117,6 +114,8 @@ class r2t {
             $oauth->fetch($api_url, $api_args, OAUTH_HTTP_METHOD_POST, array("User-Agent" => "pecl/oauth"));
             /* end oauth */
         } else {
+            include_once 'Services/Twitter.php';
+            $service = new Services_Twitter($options['twitter']['user'], $options['twitter']['pass']);
             $service->statuses->update($msg);
         }
         $this->debug("prowlApiKey: " . $options['prowlApiKey']);
