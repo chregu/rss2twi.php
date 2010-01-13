@@ -126,7 +126,7 @@ class r2t {
             'application'=>'rss2twi.php',
             'event'=>'New Post',
             'description'=> $msg,
-            'priority'=>2,
+            'priority'=>0,
             //'apikey'=>'APIKEY'	// Not required if already set during object construction.
             //'providerkey'=>"PROVIDERKEY'
             ),true);
