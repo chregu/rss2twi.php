@@ -7,9 +7,18 @@ feeds:
             # You need the pecl oauth extension for this.
             token: tokenALongStringForThetoken
             secret: secretUsuallyLongAndAll
-            # for old school username/password access
-            user: user
-            pass: pass
+            
+        ## The following are also defined also in defaults.yml and can be overwritten for each feed
+        
+        #prefix in front of each tweet
         prefix: '[blog]'
         
+        # shortener to use, this will use the r2t_shortener_liipto class.
+        #shortener: liipto
+        
+        # if an url is shorter than maxurllength, it won't be shortened
+        #maxurllength: 30
+        
+        # max posts per update round
+        #maxposts: 5        
         
