@@ -1,0 +1,15 @@
+A PHP Script to Push Items of an RSS feed to Twitter
+
+Features:
+
+* It uses OAuth for authentication. You need the pecl/oauth extension for that. Maybe someone could port it to use PHP Userland OAuth
+* It can handle more than one RSS feed
+* Configuration is via a YAML file (uses sfYaml) 
+* It can push updates to Prowl
+* It has a customizable URL Shortener (defaults to liip.to)
+* Also has a very basic Pubsubhubbub Subscriber for immediate updates.
+* It is Open Source (Apache Software Licensed) and available at Github
+
+To use it, you first have to get the oAuth Tokens. For that you call the getOAuthToken.php file from a command line and do what it tells you to do (basically to approve the App with Twitter). You add those lines to conf/feeds.yml and then just call "rss2twitter.php" to send your RSS items to Twitter. There are more options for feeds.yml, they are described in feeds.yml-dist. You can also define the defaults in conf/defaults.yml and add more than one feed.
+
+If you want to act as a Pubsubhubbub Subscriber you need to adjust and use "subscribe.php" and "callback.php".
