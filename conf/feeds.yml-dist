@@ -20,5 +20,8 @@ feeds:
         #maxurllength: 30
         
         # max posts per update round
-        #maxposts: 5        
+        #maxposts: 5    
+        
+        # Your Prowl API key, if you have one
+        #prowlApiKey: 78037898798676786
         
