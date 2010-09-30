@@ -8,8 +8,7 @@ feeds:
             token: tokenALongStringForThetoken
             secret: secretUsuallyLongAndAll
             user: user
-            # for old school username/password access
-            pass: pass
+
         ## The following are also defined also in defaults.yml and can be overwritten for each feed
         
         #prefix in front of each tweet
