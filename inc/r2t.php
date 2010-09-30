@@ -57,6 +57,9 @@ class r2t {
     }
     
     protected function mergeOptionsWithDefaults($options) {
+        
+      
+        
         foreach ($this->defaults as $name => $value) {
             if (!isset($options[$name])) {
                 $options[$name] = $value;
@@ -85,6 +88,26 @@ class r2t {
              
             $this->debug("    " . $entry['link']);
         }
+        
+        // check if something was posted with that link already
+        include_once("HTTP/Request.php");
+        if (isset($options['twitter']['user'])) {
+            $req = new HTTP_Request('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $options['twitter']['user'] );
+            if ($req->sendRequest()) {        
+                $tweets = json_decode($req->getResponseBody());
+                foreach($tweets as $tw) {
+                    if (isset($tw->text)) {
+                        if (strpos($tw->text,$entry['link']) !== false) {
+                            $this->debug("  already tweeted link " . $entry['link']); 
+                            return $options; 
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+        
         
         $msg = $entry['title'] . " " . $entry['link'];
         if (isset($options['prefix'])) {
