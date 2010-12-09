@@ -108,8 +108,13 @@ class r2t {
             }
         }
         
-        
-        $msg = $entry['title'] . " " . $entry['link'];
+        $msg = $entry['title'];
+
+        if ($options['addAuthor'] ) {
+            $msg .= " - " . preg_replace("/[^\s]+@[^\s]+/","",$entry['author']);
+        }
+        $msg .= " " . $entry['link'];
+        $msg = preg_replace("/[\s]{2,}/"," ",$msg);
         if (isset($options['prefix'])) {
             $msg = $options['prefix'] . " " . $msg;
         }
@@ -212,7 +217,8 @@ class r2t {
             }
             $e = array(
             "link" => $entry->link,
-            "title" => $entry->title
+            "title" => $entry->title,
+            "author" => $entry->author
             );
             if(!$entry->guid) {
                 $entry->guid = $entry->link;
