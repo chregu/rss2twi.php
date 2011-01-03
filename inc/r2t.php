@@ -34,13 +34,13 @@ class r2t {
             $options = $this->mergeOptionsWithDefaults($options);
             $newentries = $this->getNewEntries($feedname, $options['url']);
             $cnt = 1;
-            foreach ($newentries as $guid => $e) {
+            foreach ($newentries as $guid => $entry) {
                 try {
-                    $options = $this->twit($e, $options);
+                    $options = $this->twit($entry, $options);
                 } catch (Exception $e) {
                     $entries = sfYAML::Load(R2T_TEMP_DIR . "/$feedname");
                     
-                    print "Couldn't post " . $entry['title'] . " " . $entry['link'] . " due to " . $e->getMessage();
+                    print "Couldn't post " . $entry['title'] . " " . $entry['link'] . " due to " . $e->getMessage() . "\n";
                     unset ($entries[$guid]);
                     unset ($newentries[$guid]);
                     file_put_contents(R2T_TEMP_DIR . "/$feedname", sfYaml::dump($entries));
@@ -146,7 +146,7 @@ class r2t {
             $service = new Services_Twitter($options['twitter']['user'], $options['twitter']['pass']);
             $service->statuses->update($msg);
         }
-        $this->debug("prowlApiKey: " . $options['prowlApiKey']);
+        $this->debug("prowlApiKey: " . (isset($options['prowlApiKey']) ? $options['prowlApiKey'] : 'unset'));
         if (!empty($options['prowlApiKey'])) {
             include_once('ProwlPHP/ProwlPHP.php');
             $prowl = new Prowl($options['prowlApiKey']);
